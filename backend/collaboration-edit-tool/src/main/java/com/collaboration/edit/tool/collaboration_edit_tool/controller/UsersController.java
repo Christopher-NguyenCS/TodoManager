@@ -2,6 +2,7 @@ package com.collaboration.edit.tool.collaboration_edit_tool.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,7 +42,7 @@ public class UsersController {
     }
 
     @GetMapping("{id}")
-    public Optional<Users> getUser(@PathVariable Long id) {
+    public Optional<Users> getUser(@PathVariable UUID id) {
         return userRepository.findById(id);
     }
     
@@ -53,8 +54,8 @@ public class UsersController {
         usersServices.importUserData(userBody);
         return "Data has been set up";
     }
-    @PutMapping("{id}")
-    public String putMethodName(@PathVariable Long id, @RequestBody UserDTO userBody) {
+    @PutMapping("/{id}")
+    public String putMethodName(@PathVariable UUID id, @RequestBody UserDTO userBody) {
         boolean check = usersServices.updateUser(id,userBody);
         if(check){
             return "Successful update";
@@ -65,8 +66,12 @@ public class UsersController {
     }
 
     @DeleteMapping("{id}")
-    public void removeUser(@PathVariable Long id){
+    public String removeUser(@PathVariable UUID id){
         boolean check = usersServices.deleteUser(id);
+        if(check == true){
+            return "deleted user";
+        }
+        return "could not delete";
     }
     
 

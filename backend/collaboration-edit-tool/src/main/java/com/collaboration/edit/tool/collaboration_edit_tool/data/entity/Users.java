@@ -1,5 +1,7 @@
 package com.collaboration.edit.tool.collaboration_edit_tool.data.entity;
 
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -11,7 +13,7 @@ import jakarta.persistence.Table;
 public class Users {
     @Id
     @Column(name="user-id")
-    private long id;
+    private UUID id;
     @Column(name="first-name")
     private String firstName;
     @Column(name="last-name")
