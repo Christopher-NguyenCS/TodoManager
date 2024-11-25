@@ -21,11 +21,11 @@ public class Users {
     @Column(name="access-type")
     private String accessType;
 
-    public long getId(){
+    public UUID getId(){
         return id;
     }
-    public void setId(long id){
-        this.id = id;
+    public void setId(UUID id2){
+        this.id = id2;
     }
     public String getFirstName(){
         return firstName;
