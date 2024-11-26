@@ -29,7 +29,7 @@ public class Task {
     private String status;
     
     
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "group_id", nullable = false)
     private TaskGroup taskGroup;
     
@@ -41,6 +41,14 @@ public class Task {
     
         public void setTaskId(UUID taskId) {
             this.taskId = taskId;
+        }
+
+        public UUID getTaskGroupId(){
+            return groupId;
+        }
+
+        public void setTaskGroupId(UUID groupId){
+            this.groupId = groupId;
         }
     
         public String getTitle() {
