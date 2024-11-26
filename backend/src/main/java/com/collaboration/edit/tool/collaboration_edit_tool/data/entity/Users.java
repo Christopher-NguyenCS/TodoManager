@@ -12,13 +12,13 @@ import jakarta.persistence.Table;
 @Table(name="users")
 public class Users {
     @Id
-    @Column(name="user-id")
+    @Column(name="user_id")
     private UUID id;
-    @Column(name="first-name")
+    @Column(name="first_name")
     private String firstName;
-    @Column(name="last-name")
+    @Column(name="last_name")
     private String lastName;
-    @Column(name="access-type")
+    @Column(name="access_type")
     private String accessType;
 
     public UUID getId(){
