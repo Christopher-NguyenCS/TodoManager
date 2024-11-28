@@ -27,14 +27,17 @@ public class TaskController {
     public TaskController(TaskService taskService){
         this.taskService = taskService;
     }
+
     @GetMapping
     public List<Task> getTasks(){
         return taskService.getAllTasks();
     }
+
     @GetMapping("/{id}")
-    public Optional<Task> getTask(@PathVariable UUID id){
+    public Optional<Task> getTask(@PathVariable(value = "id") UUID id){
         return taskService.getTaskById(id);
     }
+
     @PostMapping(consumes="application/json")
     public String addTask(@RequestBody TaskDTO taskBody){
         if(taskBody != null){
@@ -45,8 +48,9 @@ public class TaskController {
         }
         return "unable to add task";
     }
+
     @PutMapping("/{id}")
-    public String putTask(@PathVariable UUID id, TaskDTO taskBody){
+    public String putTask(@PathVariable(value="id") UUID id, @RequestBody TaskDTO taskBody){
         if(taskService.updateTask(id, taskBody) )
         {
             return "Able to update task";
@@ -54,6 +58,7 @@ public class TaskController {
         return "Unable to update task";
         
     }
+
     @DeleteMapping("/{id}")
     public String removeTask(@PathVariable UUID id){
         if(taskService.deleteTask(id)){

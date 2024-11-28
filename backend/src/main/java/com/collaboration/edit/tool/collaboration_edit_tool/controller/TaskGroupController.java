@@ -32,10 +32,12 @@ public class TaskGroupController {
     public List<TaskGroup> getAllTaskGroups(){
         return taskGroupService.getAllTaskGroups();
     }
+
     @GetMapping("/{id}")
     public Optional<TaskGroup> getTaskGroup(@PathVariable UUID id){
         return taskGroupService.getTaskGroup(id);
     }
+
     @PostMapping
     public String addTaskGroup(@RequestBody TaskGroupDTO taskGroupBody){
         if(taskGroupBody != null){
@@ -44,8 +46,9 @@ public class TaskGroupController {
         }
         return "Unable to add task group";
     }
+
     @PutMapping("/{id}")
-    public String updateTaskGroup(@PathVariable UUID id, TaskGroupDTO taskGroupBody){
+    public String updateTaskGroup(@PathVariable(value="id") UUID id, @RequestBody TaskGroupDTO taskGroupBody){
         if(taskGroupBody!= null){
             if(taskGroupService.updateTaskGroup(id, taskGroupBody)){
                 return "Updated Task Group";
@@ -56,6 +59,7 @@ public class TaskGroupController {
         }
         return "Unable to update Task Group because taskGroupBody was null";
     }
+    
     @DeleteMapping("/{id}")
     public String deleteTaskGroup(@PathVariable UUID id){
         taskGroupService.deleteTaskGroup(id);

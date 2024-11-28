@@ -41,7 +41,7 @@ public class UsersController {
     }
 
     @GetMapping("{id}")
-    public Optional<Users> getUser(@PathVariable UUID id) {
+    public Optional<Users> getUser(@PathVariable(value = "id") UUID id) {
         return userRepository.findById(id);
     }
     
@@ -53,8 +53,9 @@ public class UsersController {
         usersServices.importUserData(userBody);
         return "Data has been set up";
     }
+
     @PutMapping("/{id}")
-    public String putMethodName(@PathVariable UUID id, @RequestBody UserDTO userBody) {
+    public String putMethodName(@PathVariable(value="id") UUID id, @RequestBody UserDTO userBody) {
         boolean check = usersServices.updateUser(id,userBody);
         if(check){
             return "Successful update";

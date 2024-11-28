@@ -20,6 +20,7 @@ public class TaskGroupService {
         this.taskGroupRepository = taskGroupRepository;
         this.taskRepository = taskRepository;
     }
+
     public List<TaskGroup> getAllTaskGroups() {
         return taskGroupRepository.findAll();
     }
@@ -27,6 +28,7 @@ public class TaskGroupService {
     public Optional<TaskGroup> getTaskGroup(UUID id) {
         return taskGroupRepository.findById(id);  
     }
+
     public void addTaskGroup(TaskGroupDTO taskGroupBody) {
         TaskGroup newTaskGroup = new TaskGroup();
         newTaskGroup.setGroupId(taskGroupBody.groupId);
@@ -36,17 +38,15 @@ public class TaskGroupService {
     }
 
     public boolean updateTaskGroup(UUID id, TaskGroupDTO taskGroupBody){
-        if(taskGroupRepository.existsById(id)){
-            TaskGroup updatedTaskGroup = new TaskGroup();
-            updatedTaskGroup.setGroupId(id);
-            updatedTaskGroup.setGroupDescription(taskGroupBody.groupDescription);
-            updatedTaskGroup.setGroupTitle(taskGroupBody.groupTitle);
-            taskGroupRepository.save(updatedTaskGroup);
+        Optional<TaskGroup> optionalTaskGroup = taskGroupRepository.findById(id);
+        if(optionalTaskGroup.isPresent()){
+            TaskGroup taskGroup = optionalTaskGroup.get();
+            taskGroup.setGroupDescription(taskGroupBody.groupDescription);
+            taskGroup.setGroupTitle(taskGroupBody.groupTitle);
             return true;
         }
         return false;
     }
-
 
     public void deleteTaskGroup(UUID id) {
          if(taskGroupRepository.findById(id)!= null){

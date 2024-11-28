@@ -1,6 +1,6 @@
 package com.collaboration.edit.tool.collaboration_edit_tool.services;
 
-import java.util.Optional;
+
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -25,6 +25,7 @@ public class UsersServices {
         newUser.setAccessType(body.accessType);
         userRepository.save(newUser);
     }
+    
     public boolean updateUser(UUID id, UserDTO body){
         Users updateUser = new Users();
        
