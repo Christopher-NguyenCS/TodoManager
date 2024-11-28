@@ -24,6 +24,8 @@ public class TaskService {
     }
 
     public List<Task> getAllTasks(){
+        System.out.print("Count of taskGroup:" + taskGroupRepo.count());
+        System.out.print("Number of tasks:"+taskRepo.count());
         return taskRepo.findAll();       
     }
 
@@ -38,11 +40,11 @@ public class TaskService {
         newTask.setDescription(taskBody.description);
         newTask.setDueDate(taskBody.dueDate);
         newTask.setStatus(taskBody.status);
-        newTask.setGroupId(taskBody.groupId);
-        Optional<TaskGroup> optionalTaskGroup = taskGroupRepo.findById(taskBody.groupId);
+        Optional<TaskGroup> optionalTaskGroup = taskGroupRepo.findById(taskBody.taskGroupId);
         TaskGroup taskGroup = optionalTaskGroup.orElseThrow(()-> new ResourceNotFoundException("Task group not found"));
         newTask.setTaskGroup(taskGroup);
-        taskRepo.save(newTask);
+        taskGroup.setTask(newTask);
+        taskGroupRepo.save(taskGroup);
     }
 
     public boolean updateTask(UUID id,TaskDTO taskBody){
@@ -53,7 +55,9 @@ public class TaskService {
             newTask.setDescription(taskBody.description);
             newTask.setDueDate(taskBody.dueDate);
             newTask.setStatus(taskBody.status);
-            newTask.setGroupId(taskBody.groupId);
+            Optional<TaskGroup> optionalTaskGroup = taskGroupRepo.findById(taskBody.taskGroupId);
+            TaskGroup taskGroup = optionalTaskGroup.orElseThrow(()-> new ResourceNotFoundException("Task group not found"));
+            newTask.setTaskGroup(taskGroup);
             taskRepo.save(newTask);
             return true;
         }

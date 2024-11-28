@@ -14,6 +14,6 @@ public class TaskDTO {
     public Date dueDate;
     
     public String status;
-    
-    public UUID groupId;
+
+    public UUID taskGroupId;
 }

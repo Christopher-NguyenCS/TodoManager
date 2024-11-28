@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.collaboration.edit.tool.collaboration_edit_tool.data.entity.TaskGroup;
-import com.collaboration.edit.tool.collaboration_edit_tool.model.TaskDTO;
 import com.collaboration.edit.tool.collaboration_edit_tool.model.TaskGroupDTO;
 import com.collaboration.edit.tool.collaboration_edit_tool.services.TaskGroupService;
 

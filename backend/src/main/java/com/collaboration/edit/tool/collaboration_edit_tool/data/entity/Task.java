@@ -3,6 +3,8 @@ package com.collaboration.edit.tool.collaboration_edit_tool.data.entity;
 import java.sql.Date;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -21,8 +23,6 @@ public class Task {
     @Column(name = "task_id")
     private UUID taskId;
     
-    @Column(name="task_group_id")
-    private UUID groupId;
 
     @Column(name = "title")
     private String title;
@@ -38,7 +38,8 @@ public class Task {
     
     
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "group_id", nullable = false)
+    @JoinColumn(name = "task_group_id", nullable = false)
+    @JsonBackReference
     private TaskGroup taskGroup;
     
     
@@ -51,12 +52,12 @@ public class Task {
             this.taskId = taskId;
         }
 
-        public UUID getTaskGroupId(){
-            return groupId;
+        public TaskGroup getTaskGroup(){
+            return taskGroup;
         }
-
-        public void setTaskGroupId(UUID groupId){
-            this.groupId = groupId;
+        
+        public void setTaskGroup(TaskGroup taskGroup){
+            this.taskGroup = taskGroup;
         }
     
         public String getTitle() {
@@ -91,18 +92,4 @@ public class Task {
             this.status = status;
         }
     
-        public TaskGroup getTaskGroup() {
-            return taskGroup;
-        }
-    
-        public void setTaskGroup(TaskGroup taskGroup) {
-            this.taskGroup = taskGroup;
-        }
-        
-        public UUID getGroupId(){
-            return groupId;
-        }
-        public void setGroupId(UUID groupId) {
-            this.groupId = groupId;
-    }
 }

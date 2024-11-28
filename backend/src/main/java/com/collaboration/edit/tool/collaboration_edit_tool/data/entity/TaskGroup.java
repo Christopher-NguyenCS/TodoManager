@@ -3,7 +3,16 @@ package com.collaboration.edit.tool.collaboration_edit_tool.data.entity;
 import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "task_group")  
@@ -20,6 +29,7 @@ public class TaskGroup {
     private String groupDescription;
 
     @OneToMany(mappedBy = "taskGroup", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Task> tasks;
 
     // Getters and setters
@@ -51,7 +61,7 @@ public class TaskGroup {
         return tasks;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+    public void setTask(Task task) {
+        tasks.add(task);
     }
 }
