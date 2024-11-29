@@ -43,6 +43,7 @@ public class TaskGroupService {
             TaskGroup taskGroup = optionalTaskGroup.get();
             taskGroup.setGroupDescription(taskGroupBody.groupDescription);
             taskGroup.setGroupTitle(taskGroupBody.groupTitle);
+            taskGroupRepository.save(taskGroup);
             return true;
         }
         return false;

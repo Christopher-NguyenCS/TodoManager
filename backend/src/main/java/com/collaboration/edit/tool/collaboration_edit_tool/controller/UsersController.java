@@ -50,12 +50,12 @@ public class UsersController {
         if(userBody.toString().isEmpty()){
             return "inefficient data";
         }
-        usersServices.importUserData(userBody);
+        usersServices.setUser(userBody);
         return "Data has been set up";
     }
 
     @PutMapping("/{id}")
-    public String putMethodName(@PathVariable(value="id") UUID id, @RequestBody UserDTO userBody) {
+    public String updateUser(@PathVariable(value="id") UUID id, @RequestBody UserDTO userBody) {
         boolean check = usersServices.updateUser(id,userBody);
         if(check){
             return "Successful update";
@@ -74,7 +74,5 @@ public class UsersController {
         return "could not delete";
     }
     
-
-
 
 }

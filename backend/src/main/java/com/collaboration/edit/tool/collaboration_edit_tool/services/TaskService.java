@@ -48,9 +48,9 @@ public class TaskService {
     }
 
     public boolean updateTask(UUID id,TaskDTO taskBody){
-        if(taskRepo.findById(id) != null){
-            Task newTask = new Task();
-            newTask.setTaskId(id);
+        Optional<Task> optionalTask = taskRepo.findById(id);
+        if(optionalTask.isPresent()){
+            Task newTask = optionalTask.get();
             newTask.setTitle(taskBody.title);
             newTask.setDescription(taskBody.description);
             newTask.setDueDate(taskBody.dueDate);

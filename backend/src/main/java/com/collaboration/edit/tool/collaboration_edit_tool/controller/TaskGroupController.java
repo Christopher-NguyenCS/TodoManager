@@ -34,11 +34,11 @@ public class TaskGroupController {
     }
 
     @GetMapping("/{id}")
-    public Optional<TaskGroup> getTaskGroup(@PathVariable UUID id){
+    public Optional<TaskGroup> getTaskGroup(@PathVariable(value = "id") UUID id){
         return taskGroupService.getTaskGroup(id);
     }
 
-    @PostMapping
+    @PostMapping(consumes="application/json")
     public String addTaskGroup(@RequestBody TaskGroupDTO taskGroupBody){
         if(taskGroupBody != null){
             taskGroupService.addTaskGroup(taskGroupBody);
@@ -49,7 +49,7 @@ public class TaskGroupController {
 
     @PutMapping("/{id}")
     public String updateTaskGroup(@PathVariable(value="id") UUID id, @RequestBody TaskGroupDTO taskGroupBody){
-        if(taskGroupBody!= null){
+        if(taskGroupBody != null){
             if(taskGroupService.updateTaskGroup(id, taskGroupBody)){
                 return "Updated Task Group";
             }
@@ -59,9 +59,9 @@ public class TaskGroupController {
         }
         return "Unable to update Task Group because taskGroupBody was null";
     }
-    
+
     @DeleteMapping("/{id}")
-    public String deleteTaskGroup(@PathVariable UUID id){
+    public String deleteTaskGroup(@PathVariable(value = "id") UUID id){
         taskGroupService.deleteTaskGroup(id);
         return "deleted task group";
     }

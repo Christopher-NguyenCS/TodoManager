@@ -1,6 +1,7 @@
 package com.collaboration.edit.tool.collaboration_edit_tool.services;
 
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class UsersServices {
         this.userRepository = userRepository;
     }
     
-    public void importUserData(UserDTO body){
+    public void setUser(UserDTO body){
         Users newUser = new Users();
         newUser.setFirstName(body.firstName);
         newUser.setId(body.id);
@@ -25,16 +26,16 @@ public class UsersServices {
         newUser.setAccessType(body.accessType);
         userRepository.save(newUser);
     }
-    
+
     public boolean updateUser(UUID id, UserDTO body){
-        Users updateUser = new Users();
-       
-        if(userRepository.findById(id) != null){
-            updateUser.setId(id);
-            updateUser.setFirstName(body.firstName);
-            updateUser.setLastName(body.lastName);
-            updateUser.setAccessType(body.accessType);
-            userRepository.save(updateUser);
+        Optional<Users> optionalUsers = userRepository.findById(id);
+        if(optionalUsers.isPresent()){
+            Users newUser = optionalUsers.get();
+            newUser.setId(id);
+            newUser.setFirstName(body.firstName);
+            newUser.setLastName(body.lastName);
+            newUser.setAccessType(body.accessType);
+            userRepository.save(newUser);
             return true;
         }
         else{
