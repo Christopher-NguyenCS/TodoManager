@@ -18,7 +18,8 @@ target/
 *.iws
 *.iml
 *.ipr
-
+.env
+.vscode/
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
