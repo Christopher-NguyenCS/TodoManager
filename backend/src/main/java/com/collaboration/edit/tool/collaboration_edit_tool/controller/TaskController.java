@@ -1,9 +1,10 @@
 package com.collaboration.edit.tool.collaboration_edit_tool.controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,41 +30,36 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getTasks(){
-        return taskService.getAllTasks();
+    public ResponseEntity<List<Task>> getAllTasks(){
+        
+        return new ResponseEntity<>(taskService.getAllTasks(),HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Optional<Task> getTask(@PathVariable(value = "id") UUID id){
-        return taskService.getTaskById(id);
+    public ResponseEntity<Task> getTask(@PathVariable(value = "id") UUID id){
+        Task task = taskService.getTaskById(id);
+        return new ResponseEntity<>(task, HttpStatus.OK);
     }
 
     @PostMapping(consumes="application/json")
-    public String addTask(@RequestBody TaskDTO taskBody){
-        if(taskBody != null){
-            taskService.postTask(taskBody);
-            
-            return "successfully added task";
-
-        }
-        return "unable to add task";
+    public ResponseEntity<String> addTask(@RequestBody TaskDTO taskBody){
+        taskService.postTask(taskBody);
+        return new ResponseEntity<>("successfully added task", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public String putTask(@PathVariable(value="id") UUID id, @RequestBody TaskDTO taskBody){
+    public ResponseEntity<String> putTask(@PathVariable(value="id") UUID id, @RequestBody TaskDTO taskBody){
         if(taskService.updateTask(id, taskBody) )
         {
-            return "Able to update task";
+            return new ResponseEntity<>("Able to update task", HttpStatus.OK);
         }
-        return "Unable to update task";
+        return new ResponseEntity<>("Unable to update task",HttpStatus.BAD_REQUEST);
         
     }
 
     @DeleteMapping("/{id}")
-    public String removeTask(@PathVariable UUID id){
-        if(taskService.deleteTask(id)){
-            return "Task deleted";
-        }
-        return "Task does not exist, thus can not be deleted";
+    public ResponseEntity<String> removeTask(@PathVariable UUID id){
+        taskService.deleteTask(id);
+        return new ResponseEntity<>("Task has been deleted", HttpStatus.NO_CONTENT);
     }
 }
