@@ -2,32 +2,57 @@ import { useState,useEffect } from 'react'
 import './App.css'
 
 function App() {
-  const [datas, setDatas] = useState();
-
+  const [users, setUsers] = useState();
+  const [tasks,setTasks] = useState();
   useEffect(()=>{
-    const fetchReponse = async()=>{
+    const fetchUsers = async()=>{
       try {
         const response = await fetch("http://localhost:8080/users");
         const users = await response.json();
-        setDatas(users);
+        setUsers(users);
         
       } catch (error) {
         return <div>{error}</div>
       }
     }
-    fetchReponse();
+    fetchUsers();
   },[]);
 
-  if(!datas){
-    return <div>no data</div>
+  useEffect(()=>{
+    const fetchTasks = async() =>{
+      try {
+        const response = await fetch("http://localhost:8080/tasks");
+        const tasks = await response.json();
+        console.log("Tasks:",tasks);
+        setTasks(tasks);
+      } catch (error) {
+        return <div>{error}</div>
+      }
+    }
+    fetchTasks();
+  },[]);
+
+  if(!users){
+    return <div>no users</div>
   }
+
   return (
     <>
+    {console.log(tasks)}
       <div>
-        {datas.map(data =>(
-          <li key={data.id}>{data.firstName}</li>
+        {users.map(user =>(
+          <li key={user.id}>{user.firstName}</li>
         ))}
+        {}
       </div>
+      <div>
+        {
+          tasks && tasks.length>0 ? tasks.map(task=>(
+            <li key={task.id}>{task.title}</li>
+          ))
+          :
+          <div>not able to grab tasks</div>
+        }</div>
     </>
   )
 }
