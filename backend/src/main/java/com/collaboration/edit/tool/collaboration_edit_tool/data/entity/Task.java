@@ -23,7 +23,6 @@ public class Task {
     @Column(name = "task_id")
     private UUID taskId;
     
-
     @Column(name = "title")
     private String title;
 

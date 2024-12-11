@@ -1,9 +1,10 @@
 package com.collaboration.edit.tool.collaboration_edit_tool.controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,40 +30,30 @@ public class TaskGroupController {
     }
 
     @GetMapping
-    public List<TaskGroup> getAllTaskGroups(){
-        return taskGroupService.getAllTaskGroups();
+    public ResponseEntity<List<TaskGroup>> getAllTaskGroups(){
+        return new ResponseEntity<>(taskGroupService.getAllTaskGroups(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Optional<TaskGroup> getTaskGroup(@PathVariable(value = "id") UUID id){
-        return taskGroupService.getTaskGroup(id);
+    public ResponseEntity<TaskGroup> getTaskGroup(@PathVariable(value = "id") UUID id){
+        return new ResponseEntity<>(taskGroupService.getTaskGroup(id), HttpStatus.OK);
     }
 
     @PostMapping(consumes="application/json")
-    public String addTaskGroup(@RequestBody TaskGroupDTO taskGroupBody){
-        if(taskGroupBody != null){
-            taskGroupService.addTaskGroup(taskGroupBody);
-            return "Added task group";
-        }
-        return "Unable to add task group";
+    public ResponseEntity<String> addTaskGroup(@RequestBody TaskGroupDTO taskGroupBody){
+        taskGroupService.addTaskGroup(taskGroupBody);
+        return new ResponseEntity<>("Added task group", HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public String updateTaskGroup(@PathVariable(value="id") UUID id, @RequestBody TaskGroupDTO taskGroupBody){
-        if(taskGroupBody != null){
-            if(taskGroupService.updateTaskGroup(id, taskGroupBody)){
-                return "Updated Task Group";
-            }
-            else{
-                return"Unable to update Task group because the id did not exist.";
-            }
-        }
-        return "Unable to update Task Group because taskGroupBody was null";
+    public ResponseEntity<String> updateTaskGroup(@PathVariable(value="id") UUID id, @RequestBody TaskGroupDTO taskGroupBody){       
+        taskGroupService.updateTaskGroup(id, taskGroupBody);
+        return new ResponseEntity<>("Updated Task Group", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteTaskGroup(@PathVariable(value = "id") UUID id){
+    public ResponseEntity<String> deleteTaskGroup(@PathVariable(value = "id") UUID id){
         taskGroupService.deleteTaskGroup(id);
-        return "deleted task group";
+        return new ResponseEntity<>("deleted task group", HttpStatus.NO_CONTENT);
     }
 }

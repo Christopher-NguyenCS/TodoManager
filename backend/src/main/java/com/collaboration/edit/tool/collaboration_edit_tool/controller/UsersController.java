@@ -1,9 +1,10 @@
 package com.collaboration.edit.tool.collaboration_edit_tool.controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.collaboration.edit.tool.collaboration_edit_tool.data.entity.Users;
-import com.collaboration.edit.tool.collaboration_edit_tool.data.repository.UserRepository;
 import com.collaboration.edit.tool.collaboration_edit_tool.model.UserDTO;
 import com.collaboration.edit.tool.collaboration_edit_tool.services.UsersServices;
 
@@ -25,54 +25,41 @@ import com.collaboration.edit.tool.collaboration_edit_tool.services.UsersService
 @RestController
 @RequestMapping("/users")
 public class UsersController {
-    UserRepository userRepository;
     UsersServices usersServices;
 
 
-    public UsersController(UserRepository userRepository,UsersServices usersServices){
-        this.userRepository = userRepository;
+    public UsersController(UsersServices usersServices){
         this.usersServices = usersServices;
     }
 
     
     @GetMapping
-    public List<Users> getUsers() {
-        return userRepository.findAll();
+    public ResponseEntity<List<Users>> getAllUsers() {
+        return new ResponseEntity<>(usersServices.getAllUsers(),HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public Optional<Users> getUser(@PathVariable(value = "id") UUID id) {
-        return userRepository.findById(id);
+    public ResponseEntity<Users> getUser(@PathVariable(value = "id") UUID id) {
+        return new ResponseEntity<>(usersServices.getUser(id), HttpStatus.OK);
     }
     
     @PostMapping(consumes="application/json")
-    public String setUser(@RequestBody UserDTO userBody){
-        if(userBody.toString().isEmpty()){
-            return "inefficient data";
-        }
-        usersServices.setUser(userBody);
-        return "Data has been set up";
+    public ResponseEntity<String> addUser(@RequestBody UserDTO userBody){
+        usersServices.addUser(userBody);
+        return new ResponseEntity<>("Data has been set up", HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public String updateUser(@PathVariable(value="id") UUID id, @RequestBody UserDTO userBody) {
-        boolean check = usersServices.updateUser(id,userBody);
-        if(check){
-            return "Successful update";
-        }
-        else{
-            return "Could not update";
-        }
+    public ResponseEntity<String> updateUser(@PathVariable(value="id") UUID id, @RequestBody UserDTO userBody) {
+        usersServices.updateUser(id,userBody); 
+
+        return new ResponseEntity<>("Successful update", HttpStatus.OK);
+        
     }
 
     @DeleteMapping("{id}")
-    public String removeUser(@PathVariable UUID id){
-        boolean check = usersServices.deleteUser(id);
-        if(check == true){
-            return "deleted user";
-        }
-        return "could not delete";
+    public ResponseEntity<String> removeUser(@PathVariable UUID id){
+        usersServices.deleteUser(id);
+        return new ResponseEntity<>("Delete user successfully", HttpStatus.NO_CONTENT);
     }
-    
-
 }
