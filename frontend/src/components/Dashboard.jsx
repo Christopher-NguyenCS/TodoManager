@@ -1,5 +1,6 @@
 
-//the dashboard should display the 
+
+//the dashboard
 export default function Dashboard(){
     return(
         <div className="flex md:grow bg-blue-400  md:w-11/12">
