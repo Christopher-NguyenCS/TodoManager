@@ -31,7 +31,6 @@ public class TaskController {
 
     @GetMapping
     public ResponseEntity<List<Task>> getAllTasks(){
-        
         return new ResponseEntity<>(taskService.getAllTasks(),HttpStatus.OK);
     }
 
